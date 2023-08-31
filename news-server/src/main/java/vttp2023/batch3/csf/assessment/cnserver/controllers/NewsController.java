@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
+import vttp2023.batch3.csf.assessment.cnserver.models.News;
 import vttp2023.batch3.csf.assessment.cnserver.models.TagCount;
 import vttp2023.batch3.csf.assessment.cnserver.services.NewsService;
 
@@ -60,5 +62,10 @@ public class NewsController {
 
 
 	// TODO: Task 3
+	@GetMapping(path = "/news/{tag-name}")
+	public ResponseEntity<List<News>> getNewsByTag(@PathVariable("tag-name") String tagName) {
+		return ResponseEntity.ok(newsService.getNewsByTag(tagName));
+	}
+
 
 }

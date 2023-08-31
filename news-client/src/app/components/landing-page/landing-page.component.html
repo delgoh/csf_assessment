@@ -14,6 +14,6 @@
 <h2>Top Tags</h2>
 <span *ngIf="tagsList.length == 0">No news hashtags found within the last {{selectedDuration}} minutes</span>
 <div *ngFor="let tag of tagsList">
-  <li>{{tag.tag}}({{tag.count}})</li>
+  <li><a [routerLink]="['/news', tag.tag]">{{tag.tag}}({{tag.count}})</a></li>
 </div>
 

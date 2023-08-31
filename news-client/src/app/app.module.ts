@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { NewsFormComponent } from './components/news-form/news-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { LandingPageComponent } from './components/landing-page/landing-page.component'
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { NewsDisplayComponent } from './components/news-display/news-display.component';
+import { NewsArticleComponent } from './components/news-article/news-article.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     NewsFormComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    NewsDisplayComponent,
+    NewsArticleComponent
   ],
   imports: [
     BrowserModule,

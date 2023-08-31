@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import vttp2023.batch3.csf.assessment.cnserver.models.TagCount;
@@ -102,6 +103,18 @@ public class NewsRepository {
 
 	// TODO: Task 3
 	// Write the native Mongo query in the comment above the method
-
+	/* 	db.news.find({
+    		tags: { $in: [<tagName>] }
+		})
+	*/
+	public List<Document> getNewsByTag(String tagName) {
+		return mongoTemplate.find(
+			Query.query(
+				Criteria.where("tags").in(tagName)
+			),
+			Document.class,
+			"news"
+		);
+	}
 
 }

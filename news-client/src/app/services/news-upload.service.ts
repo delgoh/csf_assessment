@@ -12,6 +12,7 @@ export class NewsUploadService {
 
   http: HttpClient = inject(HttpClient)
 
+  // Task 1
   postNews(form: FormGroup, imageRef: ElementRef, tagString: string) {
 
     const formData = new FormData();
@@ -25,11 +26,19 @@ export class NewsUploadService {
     )
   }
 
+  // Task 2
   getTags(minuteOption: number) {
     let queryParams = new HttpParams()
       .set("minuteOption", minuteOption.toString())
     return firstValueFrom(
       this.http.get<any>('/api/tags', {params: queryParams})
+    )
+  }
+
+  // Task 3
+  getNewsByTag(tagName: string) {
+    return firstValueFrom(
+      this.http.get<any>(`/api/news/${tagName}`)
     )
   }
 }

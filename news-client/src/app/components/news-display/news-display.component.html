@@ -1,0 +1,6 @@
+<h1>List of News with #{{tagName}}</h1>
+<button (click)="goBack()" type="button">Back</button>
+<button (click)="goToNewPost()">Post News</button>
+<div *ngFor="let article of articleArr">
+  <app-news-article [article]="article"></app-news-article>
+</div>

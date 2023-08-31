@@ -60,7 +60,7 @@ export class NewsFormComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/landing'])
+    this.router.navigate(['/'])
   }
 
   // closeDialog() {

@@ -40,9 +40,7 @@ public class NewsService {
 	// You may add any number of parameters
 	// Returns a list of tags and their associated count
 	public List<TagCount> getTags(Integer minuteOption) {
-		System.out.println("minuteOption: " + minuteOption);
 		Long offsetTime = System.currentTimeMillis() - minuteOption * 60000; // cut-off time for recent posts
-		System.out.println("offsetTime: " + offsetTime);
 		System.out.println(">>>> size of array");
 		System.out.println(newsRepository.getTagCounts(offsetTime).size());
 
@@ -56,8 +54,22 @@ public class NewsService {
 	// Do not change the method name and the return type
 	// You may add any number of parameters
 	// Returns a list of news
-	public List<News> getNewsByTag(/* Any number of parameters */) {
-		return new LinkedList<>();
+	public List<News> getNewsByTag(String tagName) {
+		System.out.println(">>>> size of array");
+		System.out.println(newsRepository.getNewsByTag(tagName).size());
+		return newsRepository.getNewsByTag(tagName)
+			.stream()
+			.map(doc -> {
+				News newsObject = new News();
+				newsObject.setId(doc.getObjectId("_id").toString());
+				newsObject.setPostDate(doc.getLong("postDate"));
+				newsObject.setTitle(doc.getString("title"));
+				newsObject.setDescription(doc.getString("description"));
+				newsObject.setImage(doc.getString("image"));
+				newsObject.setTags(doc.getList("tags", String.class));
+				return newsObject;
+			})
+			.toList();
 	}
 	
 }

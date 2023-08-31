@@ -1,0 +1,8 @@
+<h2>{{article.title}}</h2>
+<h3>Publish date: {{article.dateTime}}</h3>
+<img [src]="article.image" alt="news image">
+<p>{{article.description}}</p>
+<div *ngFor="let tag of article.tags">
+  <span>{{tag}}</span>
+</div>
+

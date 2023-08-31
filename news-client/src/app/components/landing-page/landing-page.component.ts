@@ -25,9 +25,16 @@ export class LandingPageComponent implements OnInit {
     this.landingForm = this.fb.group({
       duration: this.fb.control<number>(5)
     })
+    this.updateTags()
+    if (localStorage.getItem("selectedDuration") != null) {
+      // set selectedDuration to value
+    }
+
   }
 
   updateTags() {
+    localStorage.setItem("selectedDuration", this.selectedDuration.toString())
+    this.selectedDuration = this.landingForm.get('duration')!.value
     this.newsUploadService.getTags(this.selectedDuration)
       .then(res => {
         this.tagsList = res
