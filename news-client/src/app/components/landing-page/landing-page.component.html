@@ -1,11 +1,19 @@
-<p>landing-page works!</p>
+<h1>Landing Page</h1>
 <form [formGroup]="landingForm">
   <label>Time </label>
-  <select formControlName="duration">
+  <select formControlName="duration" (change)="updateTags()">
     <option *ngFor="let duration of durations" [ngValue]="duration">{{duration}} mins</option>
   </select>
 </form>
 <br>
 <br>
 <button (click)="goToNewPost()">Post News</button>
+<br>
+<br>
+<br>
+<h2>Top Tags</h2>
+<span *ngIf="tagsList.length == 0">No news hashtags found within the last {{selectedDuration}} minutes</span>
+<div *ngFor="let tag of tagsList">
+  <li>{{tag.tag}}({{tag.count}})</li>
+</div>
 

@@ -4,11 +4,17 @@ import java.util.List;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.UnwindOperation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import vttp2023.batch3.csf.assessment.cnserver.models.TagCount;
@@ -21,7 +27,14 @@ public class NewsRepository {
 
 	// TODO: Task 1 
 	// Write the native Mongo query in the comment above the method
-	/* db.news.insert(<newsObject>) */
+	/* 	db.news.insert({
+	   		postDate: <currentTime>,
+			title: <title>,
+			description: <description>,
+			image: <imageUrl>,
+			tags: <tagsArray>
+		}) 
+	*/
 	public String insertNews(String title, String imageUrl, String description, String tagString) {
 		String[] tagsToInsert = tagString.toLowerCase().trim().split("\\s+");
 		
@@ -60,14 +73,29 @@ public class NewsRepository {
 			} }
 		])
 	*/
-	public List<TagCount> getTagCounts() {
-		// MatchOperation matchPostDate = Aggregation.match(
+	public List<Document> getTagCounts(Long offsetTime) {
+		MatchOperation matchPostDate = Aggregation.match(
+			Criteria.where("postDate").gte(offsetTime)
+				.and("tags").exists(true)
+		);
+		UnwindOperation unwindTags = Aggregation.unwind("tags");
+		GroupOperation groupTags = Aggregation.group("tags")
+			.count().as("count");
+		SortOperation sortByCount = Aggregation.sort(
+			Sort.by(Direction.DESC, "count")
+		);
+		LimitOperation limitResult = Aggregation.limit(10);
+		ProjectionOperation projectResults = Aggregation.project("count").and("_id").as("tag");
 
-		// );
-
-		// UnwindOperation unwindTags = Aggregation.unwind("tags");
-		// GroupOperation groupTags = Aggregation.group()
-		return null;
+		Aggregation pipeline = Aggregation.newAggregation(
+			matchPostDate,
+			unwindTags,
+			groupTags,
+			sortByCount,
+			limitResult,
+			projectResults
+		);
+		return mongoTemplate.aggregate(pipeline, "news", Document.class).getMappedResults();
 	}
 
 

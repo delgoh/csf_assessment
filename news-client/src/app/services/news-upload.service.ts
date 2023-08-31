@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ElementRef, Injectable, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -14,13 +14,6 @@ export class NewsUploadService {
 
   postNews(form: FormGroup, imageRef: ElementRef, tagString: string) {
 
-    // console.log(">>> form: ")
-    // console.log(form.get('title')?.value)
-    // console.log(">>> imageRef: ")
-    // console.log(imageRef)
-    // console.log(">>> tagString: ")
-    // console.log(tagString)
-
     const formData = new FormData();
     formData.set('title', form.get('title')?.value)
     formData.set('photo', imageRef.nativeElement.files[0])
@@ -30,6 +23,13 @@ export class NewsUploadService {
     return firstValueFrom(
       this.http.post<any>('/api/news', formData)
     )
+  }
 
+  getTags(minuteOption: number) {
+    let queryParams = new HttpParams()
+      .set("minuteOption", minuteOption.toString())
+    return firstValueFrom(
+      this.http.get<any>('/api/tags', {params: queryParams})
+    )
   }
 }

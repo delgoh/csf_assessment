@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -34,10 +33,5 @@ public class ImageRepository {
 
 		return s3.getUrl("delgoh", key).toExternalForm();
 	}
-
-	// public String getURL(String id) {
-	// 	String key = "audio/%s".formatted(id);
-	// 	return s3.getUrl("vttpcsf", key).toExternalForm();
-	// }
 
 }
