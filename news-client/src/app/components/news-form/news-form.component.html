@@ -1,0 +1,31 @@
+<h1>Share a News</h1>
+<form [formGroup]="newsForm" (submit)="processForm()">
+  <label>Title: </label>
+  <input type="text" formControlName="title">
+  <span *ngIf="newsForm.get('title')?.invalid" class="error-text"> Must be at least 5 characters long</span>
+  <br><br>
+
+  <label>Photo: </label>
+  <input type="file" formControlName="photo">
+  <span *ngIf="newsForm.get('photo')?.invalid" class="error-text"> Mandatory</span>
+  <br><br>
+
+  <label>Description: </label>
+  <input type="text" formControlName="description">
+  <span *ngIf="newsForm.get('description')?.invalid" class="error-text"> Must be at least 5 characters long</span>
+  <br><br>
+
+  <label>Tags: </label>
+  <input type="text" formControlName="tags">
+  <button (click)="addTags()">+</button>
+  <br>
+  <div *ngFor="let tag of currentTags" class="tag-container" #tagRef>
+    <div class="tag">
+      <span>{{tag}} </span>
+      <button (click)="deleteTag(tagRef, tag)">x</button>
+    </div>
+  </div>
+  <br><br>
+
+  <button type="submit" [disabled]="newsForm.invalid">Post News</button>
+</form>
