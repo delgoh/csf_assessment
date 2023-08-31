@@ -1,22 +1,38 @@
 package vttp2023.batch3.csf.assessment.cnserver.services;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import vttp2023.batch3.csf.assessment.cnserver.models.News;
 import vttp2023.batch3.csf.assessment.cnserver.models.TagCount;
+import vttp2023.batch3.csf.assessment.cnserver.repositories.ImageRepository;
+import vttp2023.batch3.csf.assessment.cnserver.repositories.NewsRepository;
 
 @Service
 public class NewsService {
+
+	@Autowired
+	private ImageRepository imageRepository;
+
+	@Autowired
+	private NewsRepository newsRepository;
 	
 	// TODO: Task 1
 	// Do not change the method name and the return type
 	// You may add any number of parameters
 	// Returns the news id
-	public String postNews(/* Any number of parameters */) {
-		return "";
+	public String postNews(String title, MultipartFile photo, String description, String tagString) throws IOException {
+		String imageUrl = imageRepository.uploadImage(photo.getContentType(), photo.getInputStream());
+
+		String newsId = newsRepository.insertNews(title, imageUrl, description, tagString);
+
+		return newsId;
 	}
 	 
 	// TODO: Task 2

@@ -6,7 +6,7 @@
   <br><br>
 
   <label>Photo: </label>
-  <input type="file" formControlName="photo">
+  <input type="file" formControlName="photo" #photoFile>
   <span *ngIf="newsForm.get('photo')?.invalid" class="error-text"> Mandatory</span>
   <br><br>
 
@@ -17,15 +17,20 @@
 
   <label>Tags: </label>
   <input type="text" formControlName="tags">
-  <button (click)="addTags()">+</button>
+  <button (click)="addTags()" type="button">+</button>
   <br>
   <div *ngFor="let tag of currentTags" class="tag-container" #tagRef>
     <div class="tag">
       <span>{{tag}} </span>
-      <button (click)="deleteTag(tagRef, tag)">x</button>
+      <button (click)="deleteTag(tagRef, tag)" type="button">x</button>
     </div>
   </div>
   <br><br>
-
+  <button (click)="goBack()" type="button">Back</button>
   <button type="submit" [disabled]="newsForm.invalid">Post News</button>
 </form>
+
+<!-- <dialog #alertDialog>
+  <p>News saved! NewsId: {{newsId}}</p>
+  <button (click)="closeDialog()">Dismiss</button>
+</dialog> -->

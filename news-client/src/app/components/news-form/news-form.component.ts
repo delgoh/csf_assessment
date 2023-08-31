@@ -1,5 +1,7 @@
-import { Component, ElementRef, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NewsUploadService } from 'src/app/services/news-upload.service';
 
 @Component({
   selector: 'app-news-form',
@@ -8,10 +10,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class NewsFormComponent implements OnInit {
 
-  newsForm!: FormGroup
+  router: Router = inject(Router)
   fb: FormBuilder = inject(FormBuilder)
+  newsService: NewsUploadService = inject(NewsUploadService)
+
+  newsForm!: FormGroup
+  @ViewChild('photoFile') photoToUpload!: ElementRef
+  @ViewChild('alertDialog') alertDialog!: HTMLDialogElement
 
   currentTags: string[] = []
+  newsId!: string
 
   ngOnInit(): void {
     this.newsForm = this.fb.group({
@@ -39,7 +47,24 @@ export class NewsFormComponent implements OnInit {
   }
 
   processForm() {
-
+    let tagString: string = " "
+    for (const currentTag of this.currentTags) {
+      tagString += currentTag
+      tagString += " "
+    }
+    this.newsService.postNews(this.newsForm, this.photoToUpload, tagString)
+      .then(res => {
+        this.newsId = res['newsId']
+        // this.alertDialog.show()
+      })
   }
+
+  goBack() {
+    this.router.navigate(['/landing'])
+  }
+
+  // closeDialog() {
+  //   this.alertDialog.close()
+  // }
 
 }
